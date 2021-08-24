@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(ignition_math6_vendor)
 
+find_package(ament_cmake REQUIRED)
+
 option(FORCE_BUILD_VENDOR_PKG
   "Build Ignition Math from source, even if system-installed package is available"
   OFF)
@@ -78,6 +80,9 @@ endmacro()
 
 if(NOT ignition-math6_FOUND OR "${ignition-math6_VERSION}" VERSION_LESS 6.7.0)
   build_ignition_math6()
+
+  ament_export_include_directories(include)
+  ament_export_libraries(ignition-math6)
 endif()
 
 find_package(ament_cmake_test REQUIRED)
@@ -95,3 +100,6 @@ install(
   FILES package.xml
   DESTINATION share/${PROJECT_NAME}
 )
+
+# this ensures that the package has an environment hook setting the PATH
+ament_package()
